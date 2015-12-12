@@ -34,6 +34,16 @@ module Ld34.State {
         sprite.y = 300;
       } else {
         this.game.setField(r, c, 'sapling');
+        var rOffset:number;
+        var cOffset:number;
+        do {
+          rOffset = Math.floor(Math.random() * 5) - 2;
+          cOffset = Math.floor(Math.random() * 5) - 2;
+        } while(Math.abs(rOffset) + Math.abs(cOffset) > 3
+                || (Math.abs(rOffset) == 0 && Math.abs(cOffset) == 0)
+                || r + rOffset < 0 || r + rOffset > 10
+                || c + cOffset < 0 || c + cOffset > 10);
+        this.game.setField(r + rOffset, c + cOffset, 'rock');
         this.game.state.start('ingame.plantBuys');
       }
     }
