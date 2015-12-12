@@ -54,6 +54,7 @@ module Ld34.State {
                   || this.game.getField(0, tc) != 'plains');
           this.game.setField(0, tc, 'town');
         }
+        this.game.spawnSoldiers();
 
         this.game.state.start('ingame.plantBuys');
       }

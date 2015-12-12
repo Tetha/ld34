@@ -4,6 +4,7 @@ module Ld34 {
   export class PlantGame extends Phaser.Game {
     playingFields : String[][];
     evoPoints : number;
+    soldiersOnHand : number;
 
     evoPointsPerDrill : number = 2.5;
     constructor() {
@@ -25,6 +26,8 @@ module Ld34 {
 
     initGame() {
       this.evoPoints = 4;
+      this.soldiersOnHand = 3;
+
       this.playingFields = [];
       for (var row:number = 0; row < 10; row++) {
           var elements:Array<String> = [];
@@ -56,6 +59,40 @@ module Ld34 {
                   || this.isPlant(row+1, col)
                   || this.isPlant(row, col-1)
                   || this.isPlant(row, col+1));
+    }
+
+    spawnSoldiers() {
+      // TODO 1: honor man-eater tackle zones
+      // TODO 2: try to not spawn in front of rocks
+
+      var possibleLocations = [];
+      for (var c: number = 1; c < 9; c++) {
+        if (this.getField(0, c) == 'town') {
+          if (c > 1 && this.getField(0, c-1) == 'plains') {
+            possibleLocations.unshift({ row: 0, col: c-1 });
+          }
+
+          if (c < 8 && this.getField(0, c+1) == 'plains') {
+            possibleLocations.unshift({ row: 0, col: c+1 });
+          }
+
+          if (this.getField(1, c) == 'plains') {
+            possibleLocations.unshift({ row: 1, col: c });
+          }
+        }
+      }
+
+      console.log(possibleLocations);
+      while (this.soldiersOnHand > 0 && possibleLocations.length > 0) {
+        var sr:number, sc :number;
+        do {
+          var idx : number = Math.floor(Math.random()*possibleLocations.length);
+          sr = possibleLocations[idx].row;
+          sc = possibleLocations[idx].col;
+        } while(this.getField(sr, sc) != 'plains');
+        this.setField(sr, sc, 'soldier');
+        this.soldiersOnHand--;
+      }
     }
 
     processResources() {
