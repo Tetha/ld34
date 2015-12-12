@@ -17,7 +17,8 @@ module Ld34.State {
     }
 
     create() {
-      this.game.state.start('main');
+      this.game.initGame();
+      this.game.state.start('ingame.plantPlacesSapling');
     }
   }
 }

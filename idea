@@ -1,0 +1,44 @@
+
+Theme: Growing
+Mechanic: Deck Building?
+
+Grow a plant, evolve to gather resources from rocks, or evolve to eat humans.
+
+Necessary cards:
+
+ - Plant:
+   * Plant Source x
+   * Leafwork x
+   * Maneater x
+   * Rock-Bore x
+ - Humans:
+   * Town x
+   * Soldier x
+ - Environment:
+   * Plains x
+   * Resource-Rock x
+
+Screens:
+ - Ingame
+   * Displays 10 x 10 grid with current level. 
+   * Displays the current hand of the player
+   * Loop:
+    . Player can select a card from his hand and drop it into other cards. If that's valid, the card is played
+      * Plains + Leaf -> Leafwork next to other leafwork
+      * Leafwork + Maneater -> Maneater
+      * Rock-Bore + Leafwork -> Rock-Bore
+    . After that, humans place a soldier randomly next to a town or soldier
+   * Once all cards are played or the player ends the round, scoring happens
+     - Human soldiers with strength > maneater strength destroy the maneater
+     - Human soldiers not next to a man eater and next to leafwork destroy the leafwork
+     - After this, all fields adjacent to a plant connected to the plant center are examined
+       * Rock-Bore next to Resource-Rock gives +1 evo point
+     - Man-eaters next to a town with a certain strength kill this town
+   * After scoring, go to deck builder
+
+- Deck builder
+  * Use 1 evo point to buy 1 of leafwork, maneater, rock-bore
+  * use 1 evo point to improve man-eater power
+  * Use 1 evo point to remove a card
+
+Now go back ingame
