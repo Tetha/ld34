@@ -42,6 +42,7 @@ module Ld34.State {
     endTurn() {
       this.game.processResources();
       this.onEvoPointChange();
+      this.game.spawnSoldiers();
       this.game.moveSoldiers();
       this.updateAll();
     }
