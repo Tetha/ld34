@@ -113,12 +113,53 @@ module Ld34 {
 <TaoPhoenix> because you get a logjam
 <TaoPhoenix> do you get that?
       */
+      var moved:boolean = false;
+
       for(var soldier of this.findSoldiers()) {
         // if all else fails: charge!
         if (this.getField(soldier.row+1, soldier.col) == 'plains') {
           this.setField(soldier.row, soldier.col, 'plains');
           this.setField(soldier.row+1, soldier.col, 'soldier');
+          this.attackFromSoldier(soldier.row+1, soldier.col);
         }
+      }
+    }
+
+    attackFromSoldier(row: number, col: number) {
+      // todo: specialcase man-eater.
+      var searchPlant:boolean = false;
+      var killed:boolean = false;
+      if (!killed && this.isPlant(row-1, col)) {
+        searchPlant = true;
+        if (this.getField(row-1, col) == 'manEater') {
+          killed = true;
+        }
+        this.setField(row-1, col, 'plains');
+      }
+      if (!killed && this.isPlant(row+1, col)) {
+        searchPlant = true;
+        if (this.getField(row+1, col) == 'manEater') {
+          killed = true;
+        }
+        this.setField(row+1, col, 'plains');
+      }
+      if (!killed && this.isPlant(row, col-1)) {
+        searchPlant = true;
+        if (this.getField(row, col-1) == 'manEater') {
+          killed = true;
+        }
+        this.setField(row, col-1, 'plains');
+      }
+      if (!killed && this.isPlant(row, col+1)) {
+        searchPlant = true;
+        if (this.getField(row, col+1) == 'manEater') {
+          killed = true;
+        }
+        this.setField(row, col+1, 'plains');
+      }
+      if (killed) {
+        this.setField(row, col, 'plains');
+        this.soldiersOnHand++;
       }
     }
 
@@ -129,7 +170,6 @@ module Ld34 {
           soldiers.unshift({ row: r, col: c});
         }
       });
-      console.log(soldiers);
       return soldiers;
     }
 
