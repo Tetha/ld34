@@ -3,6 +3,7 @@
 module Ld34 {
   export class PlantGame extends Phaser.Game {
     playingFields : String[][];
+    plantProximity : boolean[][];
     evoPoints : number;
 
     constructor() {
@@ -24,21 +25,47 @@ module Ld34 {
 
     initGame() {
       console.log("Foop");
-//      this.evoPoints = 4;
-      this.evoPoints = 0;
+      this.evoPoints = 4;
       this.playingFields = [];
+      this.plantProximity = [];
       for (var row:number = 0; row < 10; row++) {
           var elements:Array<String> = [];
+          var proximities : boolean[] = [];
           for (var col:number = 0; col < 10; col++) {
               elements.unshift('plains');
+              proximities.unshift(false);
           }
           this.playingFields.unshift(elements);
+          this.plantProximity.unshift(proximities);
       }
     }
 
     setField(row: number, col: number, value:String) {
       console.log("woop", row, col, value);
       this.playingFields[row][col] = value;
+    }
+
+    isPlant(row: number, col: number):boolean {
+      var foo : String[] = this.playingFields[row];
+      if (foo == undefined) return false;
+      var fieldValue:String = this.playingFields[row][col];
+      return fieldValue == 'leaf' || fieldValue == 'manEater' || fieldValue == 'rockDriller' || fieldValue == 'sapling';
+    }
+
+    updatePlantProximity() {
+      for (var row:number = 0; row < 10; row++) {
+        for (var col:number = 0; col < 10; col++) {
+          if (this.playingFields[row][col] == 'plains'
+              && (this.isPlant(row-1, col)
+                  || this.isPlant(row+1, col)
+                  || this.isPlant(row, col-1)
+                  || this.isPlant(row, col+1))) {
+            this.plantProximity[row][col] = true;
+          } else {
+            this.plantProximity[row][col] = false;
+          }
+        }
+      }
     }
 
     iterateFields(callback : (row: number, col:number, state:String) => void) {
