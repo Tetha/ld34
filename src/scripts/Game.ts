@@ -35,6 +35,10 @@ module Ld34 {
       }
     }
 
+    getField(row: number, col: number): String {
+      return this.playingFields[row][col];
+    }
+
     setField(row: number, col: number, value:String) {
       console.log("woop", row, col, value);
       this.playingFields[row][col] = value;

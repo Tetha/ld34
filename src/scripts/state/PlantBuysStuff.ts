@@ -24,13 +24,19 @@ module Ld34.State {
       });
 
       this.leafShop = this.add.sprite(600, 100, 'leaf');
-      this.enableOrDisableShopSprite(this.leafShop, 100, leafCost);
-
       this.rockDrillerShop = this.add.sprite(600, 200, 'rockDriller');
-      this.enableOrDisableShopSprite(this.rockDrillerShop, 200, drillCost);
-
       this.manEaterShop = this.add.sprite(600, 300, 'manEater');
+      this.resetAllShopSprites();
+    }
+
+    resetAllShopSprites() {
+      this.enableOrDisableShopSprite(this.leafShop, 100, leafCost);
+      this.enableOrDisableShopSprite(this.rockDrillerShop, 200, drillCost);
       this.enableOrDisableShopSprite(this.manEaterShop, 300, manEaterCost);
+    }
+
+    updateSprite(row: number, col: number) {
+      this.gridSprites[row][col].loadTexture(this.game.getField(row, col));
     }
 
     enableOrDisableShopSprite(sprite:Phaser.Sprite, y:number, cost:number) {
@@ -38,6 +44,17 @@ module Ld34.State {
         sprite.inputEnabled = true;
         sprite.input.enableDrag(true);
         sprite.events.onDragStart.add(this.highlightFieldsCloseToPlants, this);
+        sprite.events.onDragStop.add((sprite, pointer) => {
+          var r = Math.floor(pointer.y / 50);
+          var c = Math.floor(pointer.x / 50);
+          console.log("Dropped on:", r, c);
+          if (this.game.evoPoints >= cost) {
+            this.game.evoPoints -= cost;
+            this.game.setField(r, c, sprite.key);
+            this.resetAllShopSprites();
+            this.updateSprite(r, c);
+          }
+        });
         sprite.events.onDragStop.add(this.resetHighlights, this);
         sprite.events.onDragStop.add(() => {
           sprite.x = 600;
