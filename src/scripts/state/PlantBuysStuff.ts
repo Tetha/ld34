@@ -24,48 +24,30 @@ module Ld34.State {
       });
 
       this.leafShop = this.add.sprite(600, 100, 'leaf');
-      if (this.game.evoPoints >= leafCost) {
-        this.leafShop.inputEnabled = true;
-        this.leafShop.input.enableDrag(true);
-        this.leafShop.events.onDragStart.add(this.highlightFieldsCloseToPlants, this);
-        this.leafShop.events.onDragStop.add(this.resetHighlights, this);
-        this.leafShop.events.onDragStop.add(() => {
-          this.leafShop.x = 600;
-          this.leafShop.y = 100;
-        });
-      } else {
-        this.leafShop.tint = disableTint;
-      }
+      this.enableOrDisableShopSprite(this.leafShop, 100, leafCost);
 
       this.rockDrillerShop = this.add.sprite(600, 200, 'rockDriller');
-      if (this.game.evoPoints >= drillCost) {
-        this.rockDrillerShop.inputEnabled = true;
-        this.rockDrillerShop.input.enableDrag(true);
-        this.rockDrillerShop.events.onDragStart.add(this.highlightFieldsCloseToPlants, this);
-        this.rockDrillerShop.events.onDragStop.add(this.resetHighlights, this);
-        this.rockDrillerShop.events.onDragStop.add(() => {
-          this.rockDrillerShop.x = 600;
-          this.rockDrillerShop.y = 200;
-        });
-      } else {
-        this.rockDrillerShop.tint = disableTint;
-      }
+      this.enableOrDisableShopSprite(this.rockDrillerShop, 200, drillCost);
 
       this.manEaterShop = this.add.sprite(600, 300, 'manEater');
-      if (this.game.evoPoints >= manEaterCost) {
-        this.manEaterShop.inputEnabled = true;
-        this.manEaterShop.input.enableDrag(true);
-        this.manEaterShop.events.onDragStart.add(this.highlightFieldsCloseToPlants, this);
-        this.manEaterShop.events.onDragStop.add(this.resetHighlights, this);
-        this.manEaterShop.events.onDragStop.add(() => {
-          this.manEaterShop.x = 600;
-          this.manEaterShop.y = 300;
-        });
-      } else {
-        this.manEaterShop.tint = disableTint;
-      }
+      this.enableOrDisableShopSprite(this.manEaterShop, 300, manEaterCost);
     }
 
+    enableOrDisableShopSprite(sprite:Phaser.Sprite, y:number, cost:number) {
+      if (this.game.evoPoints >= cost) {
+        sprite.inputEnabled = true;
+        sprite.input.enableDrag(true);
+        sprite.events.onDragStart.add(this.highlightFieldsCloseToPlants, this);
+        sprite.events.onDragStop.add(this.resetHighlights, this);
+        sprite.events.onDragStop.add(() => {
+          sprite.x = 600;
+          sprite.y = y;
+        });
+      } else {
+        sprite.inputEnabled = false;
+        sprite.tint = disableTint;
+      }
+    }
     highlightFieldsCloseToPlants() {
       this.game.iterateFields((r, c, v) => {
         if (!this.game.isPlainsCloseToPlant(r, c)) {
