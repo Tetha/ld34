@@ -47,7 +47,6 @@ module Ld34.State {
         sprite.events.onDragStop.add((sprite, pointer) => {
           var r = Math.floor(pointer.y / 50);
           var c = Math.floor(pointer.x / 50);
-          console.log("Dropped on:", r, c);
           if (this.game.evoPoints >= cost) {
             this.game.evoPoints -= cost;
             this.game.setField(r, c, sprite.key);

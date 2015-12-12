@@ -26,7 +26,6 @@ module Ld34.State {
 
 
     dragStop(sprite, pointer) {
-      console.log(pointer);
       var r = Math.floor(pointer.y / 50);
       var c = Math.floor(pointer.x / 50);
       if (r != 7) {

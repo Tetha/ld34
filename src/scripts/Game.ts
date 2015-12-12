@@ -23,7 +23,6 @@ module Ld34 {
     }
 
     initGame() {
-      console.log("Foop");
       this.evoPoints = 4;
       this.playingFields = [];
       for (var row:number = 0; row < 10; row++) {
@@ -40,7 +39,6 @@ module Ld34 {
     }
 
     setField(row: number, col: number, value:String) {
-      console.log("woop", row, col, value);
       this.playingFields[row][col] = value;
     }
 
