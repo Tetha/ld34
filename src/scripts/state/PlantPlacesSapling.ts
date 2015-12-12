@@ -1,4 +1,5 @@
 module Ld34.State {
+  var numTowns = 4;
   export class PlantPlacesSapling extends Phaser.State {
     saplingSprite : Phaser.Sprite;
     gridSprites : Phaser.Sprite[][];
@@ -43,6 +44,17 @@ module Ld34.State {
                 || r + rOffset < 0 || r + rOffset > 10
                 || c + cOffset < 0 || c + cOffset > 10);
         this.game.setField(r + rOffset, c + cOffset, 'rock');
+
+        for (var i : number = 0; i < numTowns; i++) {
+          var tc:number;
+          do {
+            tc = Math.floor(Math.random() * 10);
+          } while(tc == 0 || tc == 9
+                  || tc == c
+                  || this.game.getField(0, tc) != 'plains');
+          this.game.setField(0, tc, 'town');
+        }
+
         this.game.state.start('ingame.plantBuys');
       }
     }
