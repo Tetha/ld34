@@ -82,7 +82,6 @@ module Ld34 {
         }
       }
 
-      console.log(possibleLocations);
       while (this.soldiersOnHand > 0 && possibleLocations.length > 0) {
         var sr:number, sc :number;
         do {
