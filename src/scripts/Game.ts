@@ -94,6 +94,45 @@ module Ld34 {
       }
     }
 
+    moveSoldiers() {
+      /*
+<TaoPhoenix> so 1. 
+<TaoPhoenix> that towns thing back row only, you know now why, best protection
+<TaoPhoenix> and neither of the last two farthest edge rows
+<TaoPhoenix> and NOT opposite the sapling
+<TaoPhoenix> (because then I risk just slamming at you)
+<TaoPhoenix> (it risk me wiping you out)
+<TaoPhoenix> 2. 
+<TaoPhoenix> move to auto attack if possible
+<TaoPhoenix> it's an easy check to make
+<TaoPhoenix> 3. if you can't auto combat on your turn, make sure I can't maneater and nuke you if possible
+<TaoPhoenix> 4. if the computer is stuck, *do not move a man back*
+<TaoPhoenix> 5
+<TaoPhoenix> if possible do not spawn in front of a rock if you have choices
+<TaoPhoenix> so in our game if you have choices spawn on the b file and not the c file with the rock
+<TaoPhoenix> because you get a logjam
+<TaoPhoenix> do you get that?
+      */
+      for(var soldier of this.findSoldiers()) {
+        // if all else fails: charge!
+        if (this.getField(soldier.row+1, soldier.col) == 'plains') {
+          this.setField(soldier.row, soldier.col, 'plains');
+          this.setField(soldier.row+1, soldier.col, 'soldier');
+        }
+      }
+    }
+
+    findSoldiers() {
+      var soldiers = [];
+      this.iterateFields((r, c, v) => {
+        if (v == 'soldier') {
+          soldiers.unshift({ row: r, col: c});
+        }
+      });
+      console.log(soldiers);
+      return soldiers;
+    }
+
     processResources() {
       this.iterateFields((r,c,v) => {
         if (v == 'rockDriller') {

@@ -42,6 +42,8 @@ module Ld34.State {
     endTurn() {
       this.game.processResources();
       this.onEvoPointChange();
+      this.game.moveSoldiers();
+      this.updateAll();
     }
 
     onEvoPointChange() {
@@ -49,6 +51,10 @@ module Ld34.State {
       this.enableOrDisableShopSprite(this.rockDrillerShop, drillCost);
       this.enableOrDisableShopSprite(this.manEaterShop, manEaterCost);
       this.evoPointDisplay.text = "EvoPoints: " + this.game.evoPoints;
+    }
+
+    updateAll() {
+      this.game.iterateFields((r, c, v) => { this.updateSprite(r, c); });
     }
 
     updateSprite(row: number, col: number) {
