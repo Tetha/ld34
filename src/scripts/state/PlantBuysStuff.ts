@@ -27,6 +27,13 @@ module Ld34.State {
       this.rockDrillerShop = this.add.sprite(600, 200, 'rockDriller');
       this.manEaterShop = this.add.sprite(600, 300, 'manEater');
       this.resetAllShopSprites();
+
+      this.add.button(600, 500, 'endTurnButton', this.endTurn, this);
+    }
+
+    endTurn() {
+      this.game.processResources();
+      this.resetAllShopSprites();
     }
 
     resetAllShopSprites() {
@@ -47,7 +54,7 @@ module Ld34.State {
         sprite.events.onDragStop.add((sprite, pointer) => {
           var r = Math.floor(pointer.y / 50);
           var c = Math.floor(pointer.x / 50);
-          if (this.game.evoPoints >= cost) {
+          if (0 <= r && r < 10 && 0 <= c && c < 10 && this.game.evoPoints >= cost) {
             this.game.evoPoints -= cost;
             this.game.setField(r, c, sprite.key);
             this.resetAllShopSprites();
@@ -59,6 +66,7 @@ module Ld34.State {
           sprite.x = 600;
           sprite.y = y;
         });
+        sprite.tint = enableTint;
       } else {
         sprite.inputEnabled = false;
         sprite.tint = disableTint;

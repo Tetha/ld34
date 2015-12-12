@@ -14,6 +14,8 @@ module Ld34.State {
       this.game.load.image('sapling',     'assets/images/sapling.png');
       this.game.load.image('soldier',     'assets/images/soldier.png');
       this.game.load.image('town',        'assets/images/town.png');
+
+      this.game.load.image('endTurnButton','assets/images/end_turn_button.png');
     }
 
     create() {

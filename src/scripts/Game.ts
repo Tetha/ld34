@@ -57,6 +57,22 @@ module Ld34 {
                   || this.isPlant(row, col+1));
     }
 
+    processResources() {
+      this.iterateFields((r,c,v) => {
+        if (v == 'rockDriller') {
+          if (this.getField(r-1, c) == 'rock') {
+            this.evoPoints++;
+          } else if (this.getField(r+1, c) == 'rock') {
+            this.evoPoints++;
+          } else if (this.getField(r, c-1) == 'rock') {
+            this.evoPoints++;
+          } else if (this.getField(r, c+1) == 'rock') {
+            this.evoPoints++;
+          }
+        }
+      });
+    }
+
     iterateFields(callback : (row: number, col:number, state:String) => void) {
       for (var row:number = 0; row < 10; row++) {
         for (var col:number = 0; col < 10; col++) {
