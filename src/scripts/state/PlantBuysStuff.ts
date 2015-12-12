@@ -12,6 +12,8 @@ module Ld34.State {
     
     gridSprites : Phaser.Sprite[][];
 
+    evoPointDisplay : Phaser.BitmapText;
+
     create() {
       this.createSprites();
     }
@@ -26,28 +28,34 @@ module Ld34.State {
       this.leafShop = this.add.sprite(600, 100, 'leaf');
       this.rockDrillerShop = this.add.sprite(600, 200, 'rockDriller');
       this.manEaterShop = this.add.sprite(600, 300, 'manEater');
-      this.resetAllShopSprites();
+
+      this.setupSpriteOnce(this.leafShop, 100, leafCost);
+      this.setupSpriteOnce(this.rockDrillerShop, 200, drillCost);
+      this.setupSpriteOnce(this.manEaterShop, 300, manEaterCost);
 
       this.add.button(600, 500, 'endTurnButton', this.endTurn, this);
+      this.evoPointDisplay = this.add.text(600, 50, "EvoPoints: " + this.game.evoPoints);
+
+      this.onEvoPointChange();
     }
 
     endTurn() {
       this.game.processResources();
-      this.resetAllShopSprites();
+      this.onEvoPointChange();
     }
 
-    resetAllShopSprites() {
-      this.enableOrDisableShopSprite(this.leafShop, 100, leafCost);
-      this.enableOrDisableShopSprite(this.rockDrillerShop, 200, drillCost);
-      this.enableOrDisableShopSprite(this.manEaterShop, 300, manEaterCost);
+    onEvoPointChange() {
+      this.enableOrDisableShopSprite(this.leafShop, leafCost);
+      this.enableOrDisableShopSprite(this.rockDrillerShop, drillCost);
+      this.enableOrDisableShopSprite(this.manEaterShop, manEaterCost);
+      this.evoPointDisplay.text = "EvoPoints: " + this.game.evoPoints;
     }
 
     updateSprite(row: number, col: number) {
       this.gridSprites[row][col].loadTexture(this.game.getField(row, col));
     }
 
-    enableOrDisableShopSprite(sprite:Phaser.Sprite, y:number, cost:number) {
-      if (this.game.evoPoints >= cost) {
+    setupSpriteOnce(sprite: Phaser.Sprite, y:number, cost:number) {
         sprite.inputEnabled = true;
         sprite.input.enableDrag(true);
         sprite.events.onDragStart.add(this.highlightFieldsCloseToPlants, this);
@@ -57,7 +65,7 @@ module Ld34.State {
           if (0 <= r && r < 10 && 0 <= c && c < 10 && this.game.evoPoints >= cost) {
             this.game.evoPoints -= cost;
             this.game.setField(r, c, sprite.key);
-            this.resetAllShopSprites();
+            this.onEvoPointChange();
             this.updateSprite(r, c);
           }
         });
@@ -66,6 +74,11 @@ module Ld34.State {
           sprite.x = 600;
           sprite.y = y;
         });
+    }
+
+    enableOrDisableShopSprite(sprite:Phaser.Sprite, cost:number) {
+      if (this.game.evoPoints >= cost) {
+        sprite.inputEnabled = true;
         sprite.tint = enableTint;
       } else {
         sprite.inputEnabled = false;

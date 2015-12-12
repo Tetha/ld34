@@ -5,6 +5,7 @@ module Ld34 {
     playingFields : String[][];
     evoPoints : number;
 
+    evoPointsPerDrill : number = 2.5;
     constructor() {
       super({
         width: 800,
@@ -61,13 +62,13 @@ module Ld34 {
       this.iterateFields((r,c,v) => {
         if (v == 'rockDriller') {
           if (this.getField(r-1, c) == 'rock') {
-            this.evoPoints++;
+            this.evoPoints += this.evoPointsPerDrill;
           } else if (this.getField(r+1, c) == 'rock') {
-            this.evoPoints++;
+            this.evoPoints += this.evoPointsPerDrill;
           } else if (this.getField(r, c-1) == 'rock') {
-            this.evoPoints++;
+            this.evoPoints += this.evoPointsPerDrill;
           } else if (this.getField(r, c+1) == 'rock') {
-            this.evoPoints++;
+            this.evoPoints += this.evoPointsPerDrill;
           }
         }
       });
