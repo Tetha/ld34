@@ -4,9 +4,14 @@ module Ld34 {
   export class PlantGame extends Phaser.Game {
     playingFields : String[][];
     evoPoints : number;
+    reinforcmentCounter : number;
+
+    totalSoldiers : number;
     soldiersOnHand : number;
 
     evoPointsPerDrill : number = 2.5;
+    reinformentsAfterEvoPoints : number = 20;
+
     constructor() {
       super({
         width: 800,
@@ -29,7 +34,9 @@ module Ld34 {
 
     initGame() {
       this.evoPoints = 4;
-      this.soldiersOnHand = 4;
+      this.reinforcmentCounter = 0;
+      this.totalSoldiers = 4;
+      this.soldiersOnHand = this.totalSoldiers;
 
       this.playingFields = [];
       for (var row:number = 0; row < 10; row++) {
@@ -102,13 +109,17 @@ module Ld34 {
         }
       }
 
-      while (this.soldiersOnHand > 0 && possibleLocations.length > 0) {
+      var outerIterations = 0;
+      while (this.soldiersOnHand > 0 && possibleLocations.length > 0 && outerIterations < 10) {
         var sr:number, sc :number, idx:number;
+        outerIterations += 1;
+        var innerIterations = 0;
         do {
           idx = Math.floor(Math.random()*possibleLocations.length);
           sr = possibleLocations[idx].row;
           sc = possibleLocations[idx].col;
-        } while(this.getField(sr, sc) != 'plains');
+          innerIterations++;
+        } while(this.getField(sr, sc) != 'plains' && innerIterations < 10);
         possibleLocations.splice(idx, idx);
         this.setField(sr, sc, 'soldier');
         this.attackFromSoldier(sr, sc);
@@ -283,15 +294,24 @@ module Ld34 {
         if (v == 'rockDriller') {
           if (this.getField(r-1, c) == 'rock') {
             this.evoPoints += this.evoPointsPerDrill;
+            this.reinforcmentCounter += this.evoPointsPerDrill;
           } else if (this.getField(r+1, c) == 'rock') {
             this.evoPoints += this.evoPointsPerDrill;
+            this.reinforcmentCounter += this.evoPointsPerDrill;
           } else if (this.getField(r, c-1) == 'rock') {
             this.evoPoints += this.evoPointsPerDrill;
+            this.reinforcmentCounter += this.evoPointsPerDrill;
           } else if (this.getField(r, c+1) == 'rock') {
             this.evoPoints += this.evoPointsPerDrill;
+            this.reinforcmentCounter += this.evoPointsPerDrill;
           }
         }
       });
+      while (this.reinforcmentCounter > this.reinformentsAfterEvoPoints) {
+        this.soldiersOnHand++;
+        this.totalSoldiers++;
+        this.reinforcmentCounter -= this.reinformentsAfterEvoPoints;
+      }
     }
 
     iterateFields(callback : (row: number, col:number, state:String) => void) {

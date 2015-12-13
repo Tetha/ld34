@@ -42,8 +42,17 @@ module Ld34.State {
         } else {
           cOffset = -1;
         }
-        this.game.setField(r + rOffset, c + cOffset, 'rock');
-        this.game.setField(r + 2*rOffset, c - cOffset, 'rock');
+        if (0 < c + cOffset && c + cOffset < 10) {
+          this.game.setField(r + rOffset, c + cOffset, 'rock');
+        } else {
+          this.game.setField(r + rOffset, c, 'rock');
+        }
+
+        if (0 < c - cOffset && c - cOffset < 10) {
+          this.game.setField(r + 2 * rOffset, c - cOffset, 'rock');
+        } else {
+          this.game.setField(r + 2 * rOffset, c, 'rock');
+        }
 
         for (var i : number = 0; i < numTowns; i++) {
           var tc:number;
