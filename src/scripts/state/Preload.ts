@@ -17,6 +17,8 @@ module Ld34.State {
 
       this.game.load.image('endTurnButton','assets/images/end_turn_button.png');
       this.game.load.image('startButton',  'assets/images/start_button.png');
+      this.game.load.image('easyButton',  'assets/images/easy_button.png');
+      this.game.load.image('hardButton',  'assets/images/hard_button.png');
       this.game.load.image('restartButton','assets/images/restart_button.png');
     }
 

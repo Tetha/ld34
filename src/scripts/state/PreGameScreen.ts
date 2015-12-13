@@ -3,7 +3,9 @@ module Ld34.State {
     button : Ld34.Widgets.LabelButton;
 
     create() {
-      this.add.button(600, 50, 'startButton', this.startGame, this);
+      this.add.button(600, 50, 'easyButton', this.startEasyGame, this);
+      this.add.button(700, 50, 'hardButton', this.startHardGame, this);
+
       this.add.text(50, 75, "You are a strange alien plant.\n");
       this.add.text(50, 150, "Your goal is to place a man-eating\n"
                           + "monster-plant next to each town!");
@@ -33,6 +35,17 @@ module Ld34.State {
       this.add.text(0, 570, "Special Thanks to TaoPhoenix, for a lot of design advice + testing",
                     { 'font' : '14pt Arial' });
 
+    }
+
+
+    startEasyGame() { 
+      this.game.setToEasy();
+      this.startGame();
+    }
+
+    startHardGame() {
+      this.game.setToHard();
+      this.startGame();
     }
 
     startGame() {

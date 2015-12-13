@@ -9,8 +9,19 @@ module Ld34 {
     totalSoldiers : number;
     soldiersOnHand : number;
 
-    evoPointsPerDrill : number = 2.5;
     reinformentsAfterEvoPoints : number = 20;
+
+    difficulty = {
+      evoPointsPerDrill : 2.5
+    }
+
+    easyDifficulty = {
+      evoPointsPerDrill : 3
+    }
+
+    hardDifficulty = {
+      evoPointsPerDrill : 2.5
+    }
 
     constructor() {
       super({
@@ -30,6 +41,14 @@ module Ld34 {
       this.state.add('victory', State.WinScreen);
 
       this.state.start('boot');
+    }
+    
+    setToEasy() {
+      this.difficulty = this.easyDifficulty;
+    }
+
+    setToHard() {
+      this.difficulty = this.hardDifficulty;
     }
 
     initGame() {
@@ -311,17 +330,17 @@ module Ld34 {
       this.iterateFields((r,c,v) => {
         if (v == 'rockDriller') {
           if (this.getField(r-1, c) == 'rock') {
-            this.evoPoints += this.evoPointsPerDrill;
-            this.reinforcmentCounter += this.evoPointsPerDrill;
+            this.evoPoints += this.difficulty.evoPointsPerDrill;
+            this.reinforcmentCounter += this.difficulty.evoPointsPerDrill;
           } else if (this.getField(r+1, c) == 'rock') {
-            this.evoPoints += this.evoPointsPerDrill;
-            this.reinforcmentCounter += this.evoPointsPerDrill;
+            this.evoPoints += this.difficulty.evoPointsPerDrill;
+            this.reinforcmentCounter += this.difficulty.evoPointsPerDrill;
           } else if (this.getField(r, c-1) == 'rock') {
-            this.evoPoints += this.evoPointsPerDrill;
-            this.reinforcmentCounter += this.evoPointsPerDrill;
+            this.evoPoints += this.difficulty.evoPointsPerDrill;
+            this.reinforcmentCounter += this.difficulty.evoPointsPerDrill;
           } else if (this.getField(r, c+1) == 'rock') {
-            this.evoPoints += this.evoPointsPerDrill;
-            this.reinforcmentCounter += this.evoPointsPerDrill;
+            this.evoPoints += this.difficulty.evoPointsPerDrill;
+            this.reinforcmentCounter += this.difficulty.evoPointsPerDrill;
           }
         }
       });
