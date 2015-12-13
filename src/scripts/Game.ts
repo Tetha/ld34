@@ -165,7 +165,11 @@ module Ld34 {
         } else {
           var allNeighbours = [];
           allNeighbours.unshift({ row: soldier.row+1, col: soldier.col, weight: 1 });
+          allNeighbours.unshift({ row: soldier.row+1, col: soldier.col-1, weight: 1 });
+          allNeighbours.unshift({ row: soldier.row+1, col: soldier.col+1, weight: 1 });
           allNeighbours.unshift({ row: soldier.row-1, col: soldier.col, weight: 0 });
+          allNeighbours.unshift({ row: soldier.row-1, col: soldier.col-1, weight: 0 });
+          allNeighbours.unshift({ row: soldier.row-1, col: soldier.col+1, weight: 0 });
           allNeighbours.unshift({ row: soldier.row, col: soldier.col + 1, weight: 0 });
           allNeighbours.unshift({ row: soldier.row, col: soldier.col - 1, weight: 0 });
 
@@ -173,12 +177,17 @@ module Ld34 {
           var bestWeight = 0;
           for (var neighbour of allNeighbours) {
             if (this.getField(neighbour.row, neighbour.col) != 'plains') continue;
-            if (this.hasNeighbour(neighbour.row, neighbour.col, 'leaf')
+            if ((this.hasNeighbour(neighbour.row, neighbour.col, 'leaf')
                 || this.hasNeighbour(neighbour.row, neighbour.col, 'rockDrill')
+                || this.hasNeighbour(neighbour.row, neighbour.col, 'sapling'))
                 && !this.hasNeighbour(neighbour.row, neighbour.col, 'manEater')) {
+              console.log("soldier", soldier, "found undefended plants");
               neighbour.weight = 100;
             } else if (this.hasNeighbour(neighbour.row, neighbour.col, 'manEater')) {
+              console.log("soldier", soldier, "found no undefended plants, but a man-eater");
               neighbour.weight = 10;
+            } else if (neighbour.col == soldier.col -1) {
+              continue;
             }
             if (bestWeight < neighbour.weight) bestWeight = neighbour.weight;
             possibleNeighbours.unshift(neighbour);
