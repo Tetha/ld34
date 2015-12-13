@@ -21,6 +21,7 @@ module Ld34 {
       this.state.add('ingame.plantPlacesSapling', State.PlantPlacesSapling);
       this.state.add('ingame.plantBuys', State.PlantBuysStuff);
       this.state.add('loss', State.LoseScreen);
+      this.state.add('victory', State.WinScreen);
 
       this.state.start('boot');
     }
@@ -178,7 +179,23 @@ module Ld34 {
         nearbySoldiers.unshift({ row: row, col: col+1 });
       }
 
-      if (nearbySoldiers.length == 0) return;
+      if (nearbySoldiers.length == 0) {
+        var siegedTowns : number = 0;
+        var freeTowns : number = 0;
+        for (var c: number = 0; c < 10; c++) {
+          if (this.getField(0, c) == 'town') {
+            if (this.hasNeighbour(0, c, 'manEater')) {
+              siegedTowns ++;
+            } else {
+              freeTowns ++;
+            }
+          }
+        }
+        if (freeTowns == 0) {
+          this.state.start('victory');
+        }
+        return;
+      }
 
       var idx = Math.floor(Math.random()*nearbySoldiers.length);
       var killedSoldier = nearbySoldiers[idx];
