@@ -20,6 +20,7 @@ module Ld34 {
       this.state.add('preload', State.Preload);
       this.state.add('ingame.plantPlacesSapling', State.PlantPlacesSapling);
       this.state.add('ingame.plantBuys', State.PlantBuysStuff);
+      this.state.add('loss', State.LoseScreen);
 
       this.state.start('boot');
     }
@@ -189,6 +190,10 @@ module Ld34 {
     attackFromSoldier(row: number, col: number) {
       var searchPlant:boolean = false;
       var killed:boolean = false;
+      if (this.hasNeighbour(row, col, 'sapling')) {
+        this.state.start('loss');
+      }
+
       if (!killed && this.isPlant(row-1, col)) {
         searchPlant = true;
         if (this.getField(row-1, col) == 'manEater') {
