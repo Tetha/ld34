@@ -30,6 +30,9 @@ module Ld34.State {
       this.add.sprite(700, 450, 'manEater');
       this.add.sprite(750, 500, 'soldier');
 
+      this.add.text(0, 570, "Special Thanks to TaoPhoenix, for a lot of design advice + testing",
+                    { 'font' : '14pt Arial' });
+
     }
 
     startGame() {
