@@ -9,6 +9,8 @@ module Ld34.State {
     leafShop : Phaser.Sprite;
     rockDrillerShop : Phaser.Sprite;
     manEaterShop : Phaser.Sprite;
+    endTurnButton : Phaser.Button;
+    texts : Phaser.Sprite[];
     
     gridSprites : Phaser.Sprite[][];
 
@@ -30,6 +32,8 @@ module Ld34.State {
       this.rockDrillerShop = this.add.sprite(525, 200, 'rockDriller');
       this.manEaterShop = this.add.sprite(525, 300, 'manEater');
 
+      this.texts = [];
+
       this.setupSpriteOnce(this.leafShop, 100, leafCost,
         "Leaf: Doesn't do much in itself,\n"
        +"except allow you to spread further");
@@ -42,13 +46,15 @@ module Ld34.State {
        +"to itself",
         true);
 
-      this.add.button(525, 450, 'endTurnButton', this.endTurn, this);
+      this.endTurnButton = this.add.button(525, 450, 'endTurnButton', this.endTurn, this);
       this.evoPointDisplay = this.add.text(525, 25, "EvoPoints: " + this.game.evoPoints, {
         'font' : '14pt Arial'
       });
+      this.texts.unshift(this.evoPointDisplay);
       this.soldierDisplay = this.add.text(525, 50, "Soldiers deployed: " + (this.game.totalSoldiers - this.game.soldiersOnHand) + " / " + this.game.totalSoldiers + "max", {
         'font' : '14pt Arial'
       });
+      this.texts.unshift(this.soldierDisplay);
 
       this.onEvoPointChange();
     }
@@ -56,8 +62,13 @@ module Ld34.State {
     endTurn() {
       this.game.processResources();
       this.onEvoPointChange();
-      this.game.moveSoldiers();
-      this.game.spawnSoldiers();
+      var res1 = this.game.moveSoldiers();
+      var res2 = this.game.spawnSoldiers();
+      if (res1 == 'loss' || res2 == 'loss') {
+        this.removeSidebar();
+        this.add.text(525, 100, "You lost!\nYour plant got\nburned down :(");
+        this.add.button(525, 200, 'restartButton', this.gotoPregame, this);
+      }
       this.updateSoldierText();
       this.updateAll();
     }
@@ -101,7 +112,12 @@ module Ld34.State {
             this.onEvoPointChange();
             if (checkManEater) {
               // TODO: maybe ask the player which combat to resolve? meh.
-              this.game.attackFromManEater(r, c);
+              var victory = this.game.attackFromManEater(r, c);
+              if (victory == 'victory') {
+                this.removeSidebar();
+                this.add.text(525, 100, "You won!\nYou ate all humans!");
+                this.add.button(525, 200, 'restartButton', this.gotoPregame, this);
+              }
               this.updateSprite(r-1, c);
               this.updateSprite(r+1, c);
               this.updateSprite(r, c-1);
@@ -116,10 +132,27 @@ module Ld34.State {
           sprite.x = 525;
           sprite.y = y;
         });
-        this.add.text(575, y, "Cost: " + cost);
-        this.add.text(525, y + 50, description, {
+        this.texts.unshift(this.add.text(575, y, "Cost: " + cost));
+        this.texts.unshift(this.add.text(525, y + 50, description, {
           'font' : '12pt Arial'
-        });
+        }));
+    }
+
+    removeSidebar() {
+      this.leafShop.inputEnabled = false;
+      this.rockDrillerShop.inputEnabled = false;
+      this.manEaterShop.inputEnabled = false;
+      this.endTurnButton.inputEnabled = false;
+
+      this.leafShop.kill();
+      this.rockDrillerShop.kill();
+      this.manEaterShop.kill();
+      this.endTurnButton.kill();
+      for (var text of this.texts) text.kill();
+    }
+
+    gotoPregame() {
+      this.game.state.start('pregame');
     }
 
     enableOrDisableShopSprite(sprite:Phaser.Sprite, cost:number) {

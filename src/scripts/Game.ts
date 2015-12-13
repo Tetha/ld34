@@ -153,9 +153,11 @@ module Ld34 {
         } while(this.getField(sr, sc) != 'plains' && innerIterations < 10);
         possibleLocations.splice(idx, idx);
         this.setField(sr, sc, 'soldier');
-        this.attackFromSoldier(sr, sc);
+        var res = this.attackFromSoldier(sr, sc);
+        if (res == 'loss') return 'loss';
         this.soldiersOnHand--;
       }
+      return '';
     }
 
     moveSoldiers() {
@@ -186,11 +188,13 @@ module Ld34 {
               && this.getField(soldier.row, soldier.col+1) == 'plains') {
             this.setField(soldier.row, soldier.col, 'plains');
             this.setField(soldier.row, soldier.col+1, 'soldier');
-            this.attackFromSoldier(soldier.row, soldier.col+1);
+            var res = this.attackFromSoldier(soldier.row, soldier.col+1);
+            if (res == 'loss') return 'loss';
           } else if (this.getField(soldier.row, soldier.col-1) == 'plains') {
             this.setField(soldier.row, soldier.col, 'plains');
             this.setField(soldier.row, soldier.col-1, 'soldier');
-            this.attackFromSoldier(soldier.row, soldier.col-1);
+            var res = this.attackFromSoldier(soldier.row, soldier.col-1);
+            if (res == 'loss') return 'loss';
           }
         } else {
           var allNeighbours = [];
@@ -243,10 +247,12 @@ module Ld34 {
             var move = bestNeighbours[Math.floor(Math.random()*bestNeighbours.length)];
             this.setField(soldier.row, soldier.col, 'plains');
             this.setField(move.row, move.col, 'soldier');
-            this.attackFromSoldier(move.row, move.col);
+            var res = this.attackFromSoldier(move.row, move.col);
+            if (res == 'loss') return 'loss';
           }
         }
       }
+      return '';
     }
 
     attackFromManEater(row: number, col: number) {
@@ -281,9 +287,9 @@ module Ld34 {
           }
         }
         if (freeTowns == 0) {
-          this.state.start('victory');
+          return 'victory';
         }
-        return;
+        return '';
       }
 
       var idx = Math.floor(Math.random()*nearbySoldiers.length);
@@ -297,6 +303,7 @@ module Ld34 {
       var searchPlant:boolean = false;
       var killed:boolean = false;
       if (this.hasNeighbour(row, col, 'sapling')) {
+        return 'loss';
         this.state.start('loss');
       }
 
@@ -311,7 +318,7 @@ module Ld34 {
         this.setField(randomManEater.row, randomManEater.col, 'plains');
         this.setField(row, col, 'plains');
         this.soldiersOnHand++;
-        return;
+        return '';
       }
 
       if (!killed && this.isPlant(row-1, col)) {
@@ -346,6 +353,7 @@ module Ld34 {
         this.setField(row, col, 'plains');
         this.soldiersOnHand++;
       }
+      return '';
     }
 
     findSoldiers() {
