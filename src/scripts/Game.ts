@@ -216,14 +216,14 @@ module Ld34 {
               neighbour.weight = 10;
             } else {
               if (neighbour.row == soldier.row -1) {
-                neighbour.weight = -999;
+                continue;
               } else {
                 var sanity = Math.random();
                 if (sanity > 0.5) {
                   if (neighbour.col < soldier.col && this.saplingPos.col > soldier.col) {
-                    neighbour.weight = -999;
+                    continue;
                   } else if (neighbour.col > soldier.col && this.saplingPos.col < soldier.col) {
-                    neighbour.weight = -999;
+                    continue;
                   }
                 }
               }
