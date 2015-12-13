@@ -9,18 +9,20 @@ module Ld34 {
     totalSoldiers : number;
     soldiersOnHand : number;
 
-    reinformentsAfterEvoPoints : number = 20;
 
     difficulty = {
-      evoPointsPerDrill : 2.5
+      evoPointsPerDrill : 2.5,
+      reinformentsAfterEvoPoints : 20
     }
 
     easyDifficulty = {
-      evoPointsPerDrill : 3
+      evoPointsPerDrill : 3,
+      reinformentsAfterEvoPoints : 36
     }
 
     hardDifficulty = {
-      evoPointsPerDrill : 2.5
+      evoPointsPerDrill : 2.5,
+      reinformentsAfterEvoPoints : 20
     }
 
     constructor() {
@@ -344,10 +346,10 @@ module Ld34 {
           }
         }
       });
-      while (this.reinforcmentCounter > this.reinformentsAfterEvoPoints) {
+      while (this.reinforcmentCounter > this.difficulty.reinformentsAfterEvoPoints) {
         this.soldiersOnHand++;
         this.totalSoldiers++;
-        this.reinforcmentCounter -= this.reinformentsAfterEvoPoints;
+        this.reinforcmentCounter -= this.difficulty.reinformentsAfterEvoPoints;
       }
     }
 
