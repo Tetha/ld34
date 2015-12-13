@@ -163,7 +163,6 @@ module Ld34 {
 
       var idx = Math.floor(Math.random()*nearbySoldiers.length);
       var killedSoldier = nearbySoldiers[idx];
-      console.log(killedSoldier);
       this.soldiersOnHand++;
       this.setField(killedSoldier.row, killedSoldier.col, 'plains');
       this.setField(row, col, 'plains');
