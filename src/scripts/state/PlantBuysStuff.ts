@@ -13,6 +13,7 @@ module Ld34.State {
     gridSprites : Phaser.Sprite[][];
 
     evoPointDisplay : Phaser.BitmapText;
+    soldierDisplay : Phaser.BitmapText;
 
     create() {
       this.createSprites();
@@ -34,7 +35,12 @@ module Ld34.State {
       this.setupSpriteOnce(this.manEaterShop, 300, manEaterCost, true);
 
       this.add.button(600, 500, 'endTurnButton', this.endTurn, this);
-      this.evoPointDisplay = this.add.text(600, 50, "EvoPoints: " + this.game.evoPoints);
+      this.evoPointDisplay = this.add.text(525, 25, "EvoPoints: " + this.game.evoPoints, {
+        'font' : '14pt Arial'
+      });
+      this.soldierDisplay = this.add.text(525, 50, "Soldiers deployed: " + (this.game.totalSoldiers - this.game.soldiersOnHand) + " / " + this.game.totalSoldiers + "max", {
+        'font' : '14pt Arial'
+      });
 
       this.onEvoPointChange();
     }
@@ -44,6 +50,7 @@ module Ld34.State {
       this.onEvoPointChange();
       this.game.moveSoldiers();
       this.game.spawnSoldiers();
+      this.soldierDisplay.text = "Soldiers deployed:\n" + (this.game.totalSoldiers - this.game.soldiersOnHand) + " / " + this.game.totalSoldiers + "max";
       this.updateAll();
     }
 
