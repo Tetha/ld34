@@ -63,34 +63,47 @@ module Ld34 {
                   || this.isPlant(row, col+1));
     }
 
+    hasNeighbour(row: number, col:number, fieldType: String) {
+      if (this.getField(row-1, col) == fieldType) return true;
+      if (this.getField(row+1, col) == fieldType) return true;
+      if (this.getField(row, col-1) == fieldType) return true;
+      if (this.getField(row, col+1) == fieldType) return true;
+    }
+
     spawnSoldiers() {
-      // TODO 1: honor man-eater tackle zones
       // TODO 2: try to not spawn in front of rocks
 
       var possibleLocations = [];
       for (var c: number = 1; c < 9; c++) {
         if (this.getField(0, c) == 'town') {
           if (c > 1 && this.getField(0, c-1) == 'plains') {
-            possibleLocations.unshift({ row: 0, col: c-1 });
+            if (!this.hasNeighbour(0, c-1, 'manEater')) {
+              possibleLocations.unshift({ row: 0, col: c-1 });
+            }
           }
 
           if (c < 8 && this.getField(0, c+1) == 'plains') {
-            possibleLocations.unshift({ row: 0, col: c+1 });
+            if (!this.hasNeighbour(0, c+1, 'manEater')) {
+              possibleLocations.unshift({ row: 0, col: c+1 });
+            }
           }
 
           if (this.getField(1, c) == 'plains') {
-            possibleLocations.unshift({ row: 1, col: c });
+            if (!this.hasNeighbour(1, c, 'manEater')) {
+              possibleLocations.unshift({ row: 1, col: c });
+            }
           }
         }
       }
 
       while (this.soldiersOnHand > 0 && possibleLocations.length > 0) {
-        var sr:number, sc :number;
+        var sr:number, sc :number, idx:number;
         do {
-          var idx : number = Math.floor(Math.random()*possibleLocations.length);
+          idx = Math.floor(Math.random()*possibleLocations.length);
           sr = possibleLocations[idx].row;
           sc = possibleLocations[idx].col;
         } while(this.getField(sr, sc) != 'plains');
+        possibleLocations.splice(idx, idx);
         this.setField(sr, sc, 'soldier');
         this.soldiersOnHand--;
       }
