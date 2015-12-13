@@ -136,10 +136,24 @@ module Ld34 {
 
       for(var soldier of this.findSoldiers()) {
         // if all else fails: charge!
-        if (this.getField(soldier.row+1, soldier.col) == 'plains') {
-          this.setField(soldier.row, soldier.col, 'plains');
-          this.setField(soldier.row+1, soldier.col, 'soldier');
-          this.attackFromSoldier(soldier.row+1, soldier.col);
+        if (soldier.row == 8) {
+          var choice = Math.random();
+          if (choice < 0.5 
+              && this.getField(soldier.row, soldier.col+1) == 'plains') {
+            this.setField(soldier.row, soldier.col, 'plains');
+            this.setField(soldier.row, soldier.col+1, 'soldier');
+            this.attackFromSoldier(soldier.row, soldier.col+1);
+          } else if (this.getField(soldier.row, soldier.col-1) == 'plains') {
+            this.setField(soldier.row, soldier.col, 'plains');
+            this.setField(soldier.row, soldier.col-1, 'soldier');
+            this.attackFromSoldier(soldier.row, soldier.col-1);
+          }
+        } else {
+          if (this.getField(soldier.row+1, soldier.col) == 'plains') {
+            this.setField(soldier.row, soldier.col, 'plains');
+            this.setField(soldier.row+1, soldier.col, 'soldier');
+            this.attackFromSoldier(soldier.row+1, soldier.col);
+          }
         }
       }
     }
