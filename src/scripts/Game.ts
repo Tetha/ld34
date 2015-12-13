@@ -203,10 +203,8 @@ module Ld34 {
                 || this.hasNeighbour(neighbour.row, neighbour.col, 'rockDrill')
                 || this.hasNeighbour(neighbour.row, neighbour.col, 'sapling'))
                 && !this.hasNeighbour(neighbour.row, neighbour.col, 'manEater')) {
-              console.log("soldier", soldier, "found undefended plants");
               neighbour.weight = 100;
             } else if (this.hasNeighbour(neighbour.row, neighbour.col, 'manEater')) {
-              console.log("soldier", soldier, "found no undefended plants, but a man-eater");
               neighbour.weight = 10;
             } else if (neighbour.col == soldier.col -1) {
               continue;
@@ -214,7 +212,6 @@ module Ld34 {
             if (bestWeight < neighbour.weight) bestWeight = neighbour.weight;
             possibleNeighbours.unshift(neighbour);
           }
-          console.log(possibleNeighbours, bestWeight);
 
           var bestNeighbours = [];
           for (var neighbour of possibleNeighbours) {
