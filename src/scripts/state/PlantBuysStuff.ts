@@ -58,8 +58,12 @@ module Ld34.State {
       this.onEvoPointChange();
       this.game.moveSoldiers();
       this.game.spawnSoldiers();
-      this.soldierDisplay.text = "Soldiers deployed:\n" + (this.game.totalSoldiers - this.game.soldiersOnHand) + " / " + this.game.totalSoldiers + "max";
+      this.updateSoldierText();
       this.updateAll();
+    }
+
+    updateSoldierText() {
+      this.soldierDisplay.text = "Soldiers deployed:\n" + (this.game.totalSoldiers - this.game.soldiersOnHand) + " / " + this.game.totalSoldiers + "max";
     }
 
     onEvoPointChange() {
@@ -102,6 +106,7 @@ module Ld34.State {
               this.updateSprite(r+1, c);
               this.updateSprite(r, c-1);
               this.updateSprite(r, c+1);
+              this.updateSoldierText();
             }
             this.updateSprite(r, c);
           }

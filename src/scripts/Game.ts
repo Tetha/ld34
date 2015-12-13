@@ -16,18 +16,18 @@ module Ld34 {
     saplingPos : pos;
 
     difficulty = {
-      evoPointsPerDrill : 2.5,
-      reinformentsAfterEvoPoints : 20
     }
 
     easyDifficulty = {
       evoPointsPerDrill : 3,
       reinformentsAfterEvoPoints : 36
+      sanityChance: 0.5
     }
 
     hardDifficulty = {
       evoPointsPerDrill : 2.5,
       reinformentsAfterEvoPoints : 20
+      sanityChance: 0.8
     }
 
     constructor() {
@@ -219,7 +219,7 @@ module Ld34 {
                 continue;
               } else {
                 var sanity = Math.random();
-                if (sanity > 0.5) {
+                if (sanity > this.difficulty.sanityChance) {
                   if (neighbour.col < soldier.col && this.saplingPos.col > soldier.col) {
                     continue;
                   } else if (neighbour.col > soldier.col && this.saplingPos.col < soldier.col) {
