@@ -76,6 +76,9 @@ module Ld34 {
       var possibleLocations = [];
       for (var c: number = 1; c < 9; c++) {
         if (this.getField(0, c) == 'town') {
+          if (this.hasNeighbour(0, c, 'manEater')) {
+            continue; // town disabled
+          }
           if (c > 1 && this.getField(0, c-1) == 'plains') {
             if (!this.hasNeighbour(0, c-1, 'manEater')) {
               possibleLocations.unshift({ row: 0, col: c-1 });
