@@ -103,6 +103,7 @@ module Ld34.State {
           sprite.x = 600;
           sprite.y = y;
         });
+        this.add.text(650, y, "Cost: " + cost);
     }
 
     enableOrDisableShopSprite(sprite:Phaser.Sprite, cost:number) {
