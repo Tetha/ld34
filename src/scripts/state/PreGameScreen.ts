@@ -3,6 +3,10 @@ module Ld34.State {
     button : Ld34.Widgets.LabelButton;
 
     create() {
+      this.add.text(200, 0, "Terror Plant from outer Space", {
+        'font' : '24pt Arial',
+        'fill' : 'red'
+      });
       this.add.button(600, 50, 'easyButton', this.startEasyGame, this);
       this.add.button(700, 50, 'hardButton', this.startHardGame, this);
 
