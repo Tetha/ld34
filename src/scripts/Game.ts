@@ -20,13 +20,13 @@ module Ld34 {
 
     easyDifficulty = {
       evoPointsPerDrill : 3,
-      reinformentsAfterEvoPoints : 36
+      reinformentsAfterEvoPoints : 36,
       sanityChance: 0.5
     }
 
     hardDifficulty = {
       evoPointsPerDrill : 2.5,
-      reinformentsAfterEvoPoints : 20
+      reinformentsAfterEvoPoints : 20,
       sanityChance: 0.8
     }
 
@@ -219,7 +219,7 @@ module Ld34 {
                 continue;
               } else {
                 var sanity = Math.random();
-                if (sanity > this.difficulty.sanityChance) {
+                if (sanity < this.difficulty.sanityChance) {
                   if (neighbour.col < soldier.col && this.saplingPos.col > soldier.col) {
                     continue;
                   } else if (neighbour.col > soldier.col && this.saplingPos.col < soldier.col) {
@@ -298,6 +298,20 @@ module Ld34 {
       var killed:boolean = false;
       if (this.hasNeighbour(row, col, 'sapling')) {
         this.state.start('loss');
+      }
+
+      if (this.hasNeighbour(row, col, 'manEater')) {
+        var manEaterLocs = [];
+        if (this.getField(row -1, col) == 'manEater') manEaterLocs.push({ row: row-1, col: col });
+        if (this.getField(row +1, col) == 'manEater') manEaterLocs.push({ row: row+1, col: col });
+        if (this.getField(row, col-1) == 'manEater') manEaterLocs.push({ row: row, col: col-1 });
+        if (this.getField(row, col+1) == 'manEater') manEaterLocs.push({ row: row, col: col+1 });
+        
+        var randomManEater = manEaterLocs[Math.floor(Math.random()*manEaterLocs.length)];
+        this.setField(randomManEater.row, randomManEater.col, 'plains');
+        this.setField(row, col, 'plains');
+        this.soldiersOnHand++;
+        return;
       }
 
       if (!killed && this.isPlant(row-1, col)) {
