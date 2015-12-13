@@ -1,5 +1,6 @@
 module Ld34.State {
   var numTowns = 4;
+  var startRow = 8;
   export class PlantPlacesSapling extends Phaser.State {
     saplingSprite : Phaser.Sprite;
     gridSprites : Phaser.Sprite[][];
@@ -12,7 +13,7 @@ module Ld34.State {
       this.gridSprites = [[], [], [], [], [], [], [], [], [], []];
       this.game.iterateFields((r, c, v) => {
         var sprite:Phaser.Sprite = this.add.sprite(50*c, 50*r, v);
-        if (r != 7) {
+        if (r != startRow) {
           sprite.tint = 0x961717;
 	}
         this.gridSprites[r][c] = sprite;
@@ -29,7 +30,7 @@ module Ld34.State {
     dragStop(sprite, pointer) {
       var r = Math.floor(pointer.y / 50);
       var c = Math.floor(pointer.x / 50);
-      if (r != 7) {
+      if (r != startRow) {
         sprite.x = 600;
         sprite.y = 300;
       } else {
