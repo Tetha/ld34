@@ -105,6 +105,7 @@ module Ld34 {
         } while(this.getField(sr, sc) != 'plains');
         possibleLocations.splice(idx, idx);
         this.setField(sr, sc, 'soldier');
+        this.attackFromSoldier(sr, sc);
         this.soldiersOnHand--;
       }
     }
@@ -169,7 +170,6 @@ module Ld34 {
     }
 
     attackFromSoldier(row: number, col: number) {
-      // todo: specialcase man-eater.
       var searchPlant:boolean = false;
       var killed:boolean = false;
       if (!killed && this.isPlant(row-1, col)) {
