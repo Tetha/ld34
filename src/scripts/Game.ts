@@ -1,6 +1,10 @@
 /// <reference path="definitions/phaser.comments.d.ts"/>
 
 module Ld34 {
+  export interface pos {
+    col :number,
+    row: number
+  };
   export class PlantGame extends Phaser.Game {
     playingFields : String[][];
     evoPoints : number;
@@ -9,6 +13,7 @@ module Ld34 {
     totalSoldiers : number;
     soldiersOnHand : number;
 
+    saplingPos : pos;
 
     difficulty = {
       evoPointsPerDrill : 2.5,
@@ -73,6 +78,10 @@ module Ld34 {
       var rowArray = this.playingFields[row];
       if (rowArray == undefined) return undefined;
       return rowArray[col];
+    }
+
+    setSaplingPos(row: number, col: number) {
+      this.saplingPos = { row: row, col: col };
     }
 
     setField(row: number, col: number, value:String) {
@@ -173,8 +182,7 @@ module Ld34 {
       for(var soldier of this.findSoldiers()) {
         // if all else fails: charge!
         if (soldier.row == 8) {
-          var choice = Math.random();
-          if (choice < 0.5 
+          if (soldier.col < this.saplingPos.col
               && this.getField(soldier.row, soldier.col+1) == 'plains') {
             this.setField(soldier.row, soldier.col, 'plains');
             this.setField(soldier.row, soldier.col+1, 'soldier');
@@ -190,9 +198,9 @@ module Ld34 {
           allNeighbours.unshift({ row: soldier.row+1, col: soldier.col-1, weight: 1 });
           allNeighbours.unshift({ row: soldier.row+1, col: soldier.col+1, weight: 1 });
           allNeighbours.unshift({ row: soldier.row-1, col: soldier.col, weight: 0 });
-          allNeighbours.unshift({ row: soldier.row-1, col: soldier.col-1, weight: 0 });
           allNeighbours.unshift({ row: soldier.row-1, col: soldier.col+1, weight: 0 });
           allNeighbours.unshift({ row: soldier.row, col: soldier.col + 1, weight: 0 });
+          allNeighbours.unshift({ row: soldier.row-1, col: soldier.col-1, weight: 0 });
           allNeighbours.unshift({ row: soldier.row, col: soldier.col - 1, weight: 0 });
 
           var possibleNeighbours = [];
@@ -206,8 +214,19 @@ module Ld34 {
               neighbour.weight = 100;
             } else if (this.hasNeighbour(neighbour.row, neighbour.col, 'manEater')) {
               neighbour.weight = 10;
-            } else if (neighbour.col == soldier.col -1) {
-              continue;
+            } else {
+              if (neighbour.row == soldier.row -1) {
+                neighbour.weight = -999;
+              } else {
+                var sanity = Math.random();
+                if (sanity > 0.5) {
+                  if (neighbour.col < soldier.col && this.saplingPos.col > soldier.col) {
+                    neighbour.weight = -999;
+                  } else if (neighbour.col > soldier.col && this.saplingPos.col < soldier.col) {
+                    neighbour.weight = -999;
+                  }
+                }
+              }
             }
             if (bestWeight < neighbour.weight) bestWeight = neighbour.weight;
             possibleNeighbours.unshift(neighbour);

@@ -35,6 +35,7 @@ module Ld34.State {
         sprite.y = 300;
       } else {
         this.game.setField(r, c, 'sapling');
+        this.game.setSaplingPos(r, c);
         var rOffset:number = -2;
         var cOffset:number;
         if ((Math.random() - 0.5) > 0) {
