@@ -31,7 +31,7 @@ module Ld34.State {
 
       this.setupSpriteOnce(this.leafShop, 100, leafCost);
       this.setupSpriteOnce(this.rockDrillerShop, 200, drillCost);
-      this.setupSpriteOnce(this.manEaterShop, 300, manEaterCost);
+      this.setupSpriteOnce(this.manEaterShop, 300, manEaterCost, true);
 
       this.add.button(600, 500, 'endTurnButton', this.endTurn, this);
       this.evoPointDisplay = this.add.text(600, 50, "EvoPoints: " + this.game.evoPoints);
@@ -42,8 +42,8 @@ module Ld34.State {
     endTurn() {
       this.game.processResources();
       this.onEvoPointChange();
-      this.game.spawnSoldiers();
       this.game.moveSoldiers();
+      this.game.spawnSoldiers();
       this.updateAll();
     }
 
@@ -59,10 +59,12 @@ module Ld34.State {
     }
 
     updateSprite(row: number, col: number) {
+      var rowArray = this.gridSprites[row];
+      if (rowArray == undefined) return;
       this.gridSprites[row][col].loadTexture(this.game.getField(row, col));
     }
 
-    setupSpriteOnce(sprite: Phaser.Sprite, y:number, cost:number) {
+    setupSpriteOnce(sprite: Phaser.Sprite, y:number, cost:number, checkManEater = false) {
         sprite.inputEnabled = true;
         sprite.input.enableDrag(true);
         sprite.events.onDragStart.add(this.highlightFieldsCloseToPlants, this);
@@ -76,6 +78,14 @@ module Ld34.State {
             this.game.evoPoints -= cost;
             this.game.setField(r, c, sprite.key);
             this.onEvoPointChange();
+            if (checkManEater) {
+              // TODO: maybe ask the player which combat to resolve? meh.
+              this.game.attackFromManEater(r, c);
+              this.updateSprite(r-1, c);
+              this.updateSprite(r+1, c);
+              this.updateSprite(r, c-1);
+              this.updateSprite(r, c+1);
+            }
             this.updateSprite(r, c);
           }
         });

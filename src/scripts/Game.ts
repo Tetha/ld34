@@ -40,7 +40,7 @@ module Ld34 {
 
     getField(row: number, col: number): String {
       var rowArray = this.playingFields[row];
-      if (rowArray == undefined) return rowArray;
+      if (rowArray == undefined) return undefined;
       return rowArray[col];
     }
 
@@ -125,6 +125,35 @@ module Ld34 {
           this.attackFromSoldier(soldier.row+1, soldier.col);
         }
       }
+    }
+
+    attackFromManEater(row: number, col: number) {
+      var nearbySoldiers = [];
+
+      if (this.getField(row-1, col) == 'soldier') {
+        nearbySoldiers.unshift({ row: row-1, col: col });
+      }
+
+      if (this.getField(row+1, col) == 'soldier') {
+        nearbySoldiers.unshift({ row: row+1, col: col });
+      }
+
+      if (this.getField(row, col-1) == 'soldier') {
+        nearbySoldiers.unshift({ row: row, col: col-1 });
+      }
+
+      if (this.getField(row, col+1) == 'soldier') {
+        nearbySoldiers.unshift({ row: row, col: col+1 });
+      }
+
+      if (nearbySoldiers.length == 0) return;
+
+      var idx = Math.floor(Math.random()*nearbySoldiers.length);
+      var killedSoldier = nearbySoldiers[idx];
+      console.log(killedSoldier);
+      this.soldiersOnHand++;
+      this.setField(killedSoldier.row, killedSoldier.col, 'plains');
+      this.setField(row, col, 'plains');
     }
 
     attackFromSoldier(row: number, col: number) {
