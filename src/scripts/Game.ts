@@ -39,7 +39,9 @@ module Ld34 {
     }
 
     getField(row: number, col: number): String {
-      return this.playingFields[row][col];
+      var rowArray = this.playingFields[row];
+      if (rowArray == undefined) return rowArray;
+      return rowArray[col];
     }
 
     setField(row: number, col: number, value:String) {
