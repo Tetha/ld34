@@ -155,6 +155,28 @@ module Ld34 {
             this.setField(soldier.row, soldier.col, 'plains');
             this.setField(soldier.row+1, soldier.col, 'soldier');
             this.attackFromSoldier(soldier.row+1, soldier.col);
+          } else if (this.getField(soldier.row+1, soldier.col) == 'rock') {
+            if (this.getField(soldier.row, soldier.col+1) == 'plains'
+                && this.getField(soldier.row, soldier.col-1) == 'plains') {
+              var choice = Math.random();
+              if (choice > 0.5) {
+                this.setField(soldier.row, soldier.col, 'plains');
+                this.setField(soldier.row, soldier.col+1, 'soldier');
+                this.attackFromSoldier(soldier.row, soldier.col+1);
+              } else {
+                this.setField(soldier.row, soldier.col, 'plains');
+                this.setField(soldier.row, soldier.col-1, 'soldier');
+                this.attackFromSoldier(soldier.row, soldier.col-1);
+              }
+            } else if (this.getField(soldier.row, soldier.col+1) == 'plains') {
+              this.setField(soldier.row, soldier.col, 'plains');
+              this.setField(soldier.row, soldier.col+1, 'soldier');
+              this.attackFromSoldier(soldier.row, soldier.col+1);
+            } else if (this.getField(soldier.row, soldier.col-1) == 'plains') {
+              this.setField(soldier.row, soldier.col, 'plains');
+              this.setField(soldier.row, soldier.col-1, 'soldier');
+              this.attackFromSoldier(soldier.row, soldier.col-1);
+            }
           }
         }
       }
