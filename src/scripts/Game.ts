@@ -20,6 +20,7 @@ module Ld34 {
       this.state.add('preload', State.Preload);
       this.state.add('ingame.plantPlacesSapling', State.PlantPlacesSapling);
       this.state.add('ingame.plantBuys', State.PlantBuysStuff);
+      this.state.add('pregame', State.PreGameScreen);
       this.state.add('loss', State.LoseScreen);
       this.state.add('victory', State.WinScreen);
 

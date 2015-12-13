@@ -16,11 +16,12 @@ module Ld34.State {
       this.game.load.image('town',        'assets/images/town.png');
 
       this.game.load.image('endTurnButton','assets/images/end_turn_button.png');
+      this.game.load.image('startButton',  'assets/images/start_button.png');
+      this.game.load.image('restartButton','assets/images/restart_button.png');
     }
 
     create() {
-      this.game.initGame();
-      this.game.state.start('ingame.plantPlacesSapling');
+      this.game.state.start('pregame');
     }
   }
 }
