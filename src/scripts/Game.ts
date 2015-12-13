@@ -29,7 +29,7 @@ module Ld34 {
 
     initGame() {
       this.evoPoints = 4;
-      this.soldiersOnHand = 3;
+      this.soldiersOnHand = 4;
 
       this.playingFields = [];
       for (var row:number = 0; row < 10; row++) {
