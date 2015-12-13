@@ -69,7 +69,10 @@ module Ld34.State {
         sprite.events.onDragStop.add((sprite, pointer) => {
           var r = Math.floor(pointer.y / 50);
           var c = Math.floor(pointer.x / 50);
-          if (0 <= r && r < 10 && 0 <= c && c < 10 && this.game.evoPoints >= cost) {
+          if (  0 <= r && r < 10
+             && 0 <= c && c < 10 
+             && this.game.evoPoints >= cost
+             && this.game.isPlainsCloseToPlant(r, c)) {
             this.game.evoPoints -= cost;
             this.game.setField(r, c, sprite.key);
             this.onEvoPointChange();
