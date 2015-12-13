@@ -27,8 +27,8 @@ module Ld34.State {
 
       this.add.text(50, 475, "And place man-eating soldiers to eat soldiers");
 
-      this.add.sprite(750, 450, 'manEater');
-      this.add.sprite(700, 500, 'soldier');
+      this.add.sprite(700, 450, 'manEater');
+      this.add.sprite(750, 500, 'soldier');
 
     }
 
