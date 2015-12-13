@@ -34,16 +34,15 @@ module Ld34.State {
         sprite.y = 300;
       } else {
         this.game.setField(r, c, 'sapling');
-        var rOffset:number;
+        var rOffset:number = -2;
         var cOffset:number;
-        do {
-          rOffset = Math.floor(Math.random() * 5) - 2;
-          cOffset = Math.floor(Math.random() * 5) - 2;
-        } while(Math.abs(rOffset) + Math.abs(cOffset) > 3
-                || (Math.abs(rOffset) == 0 && Math.abs(cOffset) == 0)
-                || r + rOffset < 0 || r + rOffset > 10
-                || c + cOffset < 0 || c + cOffset > 10);
+        if ((Math.random() - 0.5) > 0) {
+          cOffset = 1;
+        } else {
+          cOffset = -1;
+        }
         this.game.setField(r + rOffset, c + cOffset, 'rock');
+        this.game.setField(r + 2*rOffset, c - cOffset, 'rock');
 
         for (var i : number = 0; i < numTowns; i++) {
           var tc:number;
