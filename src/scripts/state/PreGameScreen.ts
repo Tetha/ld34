@@ -23,7 +23,7 @@ module Ld34.State {
 
       this.add.sprite(700, 200, 'leaf');
       this.add.sprite(700, 250, 'leaf');
-      this.add.sprite(700, 300, 'sapling');
+      this.add.sprite(700, 300, 'manEater');
 
       this.add.text(50, 410, "Place Rock Drillers to get resources from rocks");
 
@@ -33,7 +33,7 @@ module Ld34.State {
 
       this.add.text(50, 475, "And place man-eating plants to eat soldiers");
 
-      this.add.sprite(700, 450, 'manEater');
+      this.add.sprite(700, 450, 'sapling');
       this.add.sprite(750, 500, 'soldier');
 
       this.add.text(0, 570, "Special Thanks to TaoPhoenix, for a lot of design advice + testing",
