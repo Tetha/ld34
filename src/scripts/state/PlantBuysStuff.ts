@@ -61,7 +61,9 @@ module Ld34.State {
     updateSprite(row: number, col: number) {
       var rowArray = this.gridSprites[row];
       if (rowArray == undefined) return;
-      this.gridSprites[row][col].loadTexture(this.game.getField(row, col));
+      var sprite = rowArray[col];
+      if (sprite == undefined) return;
+      sprite.loadTexture(this.game.getField(row, col));
     }
 
     setupSpriteOnce(sprite: Phaser.Sprite, y:number, cost:number, checkManEater = false) {

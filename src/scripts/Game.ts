@@ -163,6 +163,46 @@ module Ld34 {
             this.attackFromSoldier(soldier.row, soldier.col-1);
           }
         } else {
+          var allNeighbours = [];
+          allNeighbours.unshift({ row: soldier.row+1, col: soldier.col, weight: 1 });
+          allNeighbours.unshift({ row: soldier.row-1, col: soldier.col, weight: 0 });
+          allNeighbours.unshift({ row: soldier.row, col: soldier.col + 1, weight: 0 });
+          allNeighbours.unshift({ row: soldier.row, col: soldier.col - 1, weight: 0 });
+
+          var possibleNeighbours = [];
+          var bestWeight = 0;
+          for (var neighbour of allNeighbours) {
+            if (this.getField(neighbour.row, neighbour.col) != 'plains') continue;
+            if (this.hasNeighbour(neighbour.row, neighbour.col, 'leaf')
+                || this.hasNeighbour(neighbour.row, neighbour.col, 'rockDrill')
+                && !this.hasNeighbour(neighbour.row, neighbour.col, 'manEater')) {
+              neighbour.weight = 100;
+            } else if (this.hasNeighbour(neighbour.row, neighbour.col, 'manEater')) {
+              neighbour.weight = 10;
+            }
+            if (bestWeight < neighbour.weight) bestWeight = neighbour.weight;
+            possibleNeighbours.unshift(neighbour);
+          }
+          console.log(possibleNeighbours, bestWeight);
+
+          var bestNeighbours = [];
+          for (var neighbour of possibleNeighbours) {
+            if (neighbour.weight == bestWeight) {
+              bestNeighbours.unshift(neighbour);
+            }
+          }
+
+          if (bestNeighbours.length == 0) {
+            continue;
+          } else {
+            var move = bestNeighbours[Math.floor(Math.random()*bestNeighbours.length)];
+            this.setField(soldier.row, soldier.col, 'plains');
+            this.setField(move.row, move.col, 'soldier');
+            this.attackFromSoldier(move.row, move.col);
+            continue;
+          }
+        
+
           if (this.getField(soldier.row+1, soldier.col) == 'plains') {
             this.setField(soldier.row, soldier.col, 'plains');
             this.setField(soldier.row+1, soldier.col, 'soldier');
