@@ -31,7 +31,7 @@ module Ld34.State {
       this.add.sprite(700, 400, 'rockDriller');
       this.add.sprite(750, 400, 'rock');
 
-      this.add.text(50, 475, "And place man-eating soldiers to eat soldiers");
+      this.add.text(50, 475, "And place man-eating plants to eat soldiers");
 
       this.add.sprite(700, 450, 'manEater');
       this.add.sprite(750, 500, 'soldier');
